@@ -29,7 +29,7 @@ public class PagamentoService {
 
     public PagamentoDTO obterPorId(Long id) {
         Pagamento pagamento = pagamentoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
+                .orElseThrow(EntityNotFoundException::new);
 
         return modelMapper.map(pagamento, PagamentoDTO.class);
     }
