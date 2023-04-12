@@ -2,14 +2,7 @@ package br.com.queirozfood.pagamentos.dto;
 
 import br.com.queirozfood.pagamentos.enums.PagamentoStatus;
 import br.com.queirozfood.pagamentos.model.Pagamento;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;

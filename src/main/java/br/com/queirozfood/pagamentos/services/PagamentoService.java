@@ -4,7 +4,7 @@ import br.com.queirozfood.pagamentos.dto.PagamentoDTO;
 import br.com.queirozfood.pagamentos.enums.PagamentoStatus;
 import br.com.queirozfood.pagamentos.model.Pagamento;
 import br.com.queirozfood.pagamentos.repositories.PagamentoRepository;
-import jakarta.persistence.EntityNotFoundException;
+import javax.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
