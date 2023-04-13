@@ -3,6 +3,8 @@ package br.com.queirozfood.pagamentos.controllers;
 import br.com.queirozfood.pagamentos.dto.PagamentoDTO;
 import br.com.queirozfood.pagamentos.services.PagamentoService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,9 @@ public class PagamentoController {
     @Autowired
     private PagamentoService pagamentoService;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     @GetMapping
     public Page<PagamentoDTO> obterTodos(@PageableDefault(size = 10) Pageable paginacao) {
 
@@ -40,6 +45,9 @@ public class PagamentoController {
 
         PagamentoDTO pagamentoDTO = pagamentoService.criarPagamento(dto);
         URI endereco = uriBuilder.path("/pagamentos/{id}").buildAndExpand(pagamentoDTO.getId()).toUri();
+
+        Message message = new Message(("Criei um pagamento com o id " + pagamentoDTO.getId()).getBytes());
+        rabbitTemplate.send("pagamento.concluido", message);
 
         return ResponseEntity.created(endereco).body(pagamentoDTO);
     }
