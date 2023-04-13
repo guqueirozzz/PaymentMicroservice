@@ -50,6 +50,14 @@ public class PagamentoController {
         return ResponseEntity.ok(atualizado);
     }
 
+    @PatchMapping("/{id}/confirmar")
+    public ResponseEntity<PagamentoDTO> confirmarPagamento(@PathVariable @NotNull Long id) {
+
+        PagamentoDTO dto = pagamentoService.confirmarPagamento(id);
+        return ResponseEntity.ok().body(dto);
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<PagamentoDTO> remover(@PathVariable @NotNull Long id) {
 

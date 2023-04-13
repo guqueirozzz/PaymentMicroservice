@@ -2,6 +2,7 @@ package br.com.queirozfood.pagamentos.services;
 
 import br.com.queirozfood.pagamentos.dto.PagamentoDTO;
 import br.com.queirozfood.pagamentos.enums.PagamentoStatus;
+import br.com.queirozfood.pagamentos.http.PedidoClient;
 import br.com.queirozfood.pagamentos.model.Pagamento;
 import br.com.queirozfood.pagamentos.repositories.PagamentoRepository;
 import javax.persistence.EntityNotFoundException;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PagamentoService {
 
@@ -19,6 +22,9 @@ public class PagamentoService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private PedidoClient pedido;
 
     public Page<PagamentoDTO> obterTodos(Pageable paginacao) {
 
@@ -57,5 +63,20 @@ public class PagamentoService {
     public void excluirPagamento(Long id) {
 
         pagamentoRepository.deleteById(id);
+    }
+
+    public PagamentoDTO confirmarPagamento(Long id) {
+
+        Optional<Pagamento> pagamento = pagamentoRepository.findById(id);
+
+        if(!pagamento.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+
+        pagamento.get().setStatus(PagamentoStatus.CONFIRMADO);
+        pagamentoRepository.save(pagamento.get());
+        pedido.atualizaPagamento(pagamento.get().getPedidoId());
+
+        return modelMapper.map(pagamento, PagamentoDTO.class);
     }
 }
