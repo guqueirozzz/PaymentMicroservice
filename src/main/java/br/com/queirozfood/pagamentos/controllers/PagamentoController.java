@@ -2,6 +2,7 @@ package br.com.queirozfood.pagamentos.controllers;
 
 import br.com.queirozfood.pagamentos.dto.PagamentoDTO;
 import br.com.queirozfood.pagamentos.services.PagamentoService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,9 +52,16 @@ public class PagamentoController {
     }
 
     @PatchMapping("/{id}/confirmar")
+    @CircuitBreaker(name = "atualizaPedido", fallbackMethod = "pagamentoAutorizadoComIntegracaoPendente")
     public ResponseEntity<PagamentoDTO> confirmarPagamento(@PathVariable @NotNull Long id) {
 
         PagamentoDTO dto = pagamentoService.confirmarPagamento(id);
+        return ResponseEntity.ok().body(dto);
+    }
+
+    public ResponseEntity<PagamentoDTO> pagamentoAutorizadoComIntegracaoPendente(Long id, Exception e) {
+
+        PagamentoDTO dto = pagamentoService.alteraStatus(id);
         return ResponseEntity.ok().body(dto);
     }
 

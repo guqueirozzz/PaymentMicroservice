@@ -4,5 +4,6 @@ public enum PagamentoStatus {
 
     CRIADO,
     CONFIRMADO,
-    CANCELADO
+    CANCELADO,
+    CONFIRMADO_SEM_INTEGRACAO
 }

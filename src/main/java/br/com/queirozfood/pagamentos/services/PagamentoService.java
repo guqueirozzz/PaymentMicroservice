@@ -79,4 +79,18 @@ public class PagamentoService {
 
         return modelMapper.map(pagamento, PagamentoDTO.class);
     }
+
+    public PagamentoDTO alteraStatus(Long id) {
+
+        Optional<Pagamento> pagamento = pagamentoRepository.findById(id);
+
+        if(!pagamento.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+
+        pagamento.get().setStatus(PagamentoStatus.CONFIRMADO_SEM_INTEGRACAO);
+        pagamentoRepository.save(pagamento.get());
+
+        return modelMapper.map(pagamento, PagamentoDTO.class);
+    }
 }
