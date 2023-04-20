@@ -47,7 +47,7 @@ public class PagamentoController {
         URI endereco = uriBuilder.path("/pagamentos/{id}").buildAndExpand(pagamentoDTO.getId()).toUri();
 
         Message message = new Message(("Criei um pagamento com o id " + pagamentoDTO.getId()).getBytes());
-        rabbitTemplate.convertAndSend("pagamento.concluido", pagamentoDTO);
+        rabbitTemplate.convertAndSend("pagamentos.exchange", "", pagamentoDTO); // removendo a routkey por conta da exchange
 
         return ResponseEntity.created(endereco).body(pagamentoDTO);
     }

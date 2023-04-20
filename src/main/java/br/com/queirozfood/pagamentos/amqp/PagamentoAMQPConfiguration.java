@@ -1,6 +1,7 @@
 package br.com.queirozfood.pagamentos.amqp;
 
 
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -15,6 +16,8 @@ import org.springframework.amqp.core.Queue;
 @Configuration
 public class PagamentoAMQPConfiguration {
 
+    // COMENTADO POR CONTA DA FANNOUT EXCHANGE
+    // AS PROPRIAS APLICAÇÕES CRIAM E FAZEM O VINCULO COM A EXCHANGE.
     @Bean
     public Queue criaFila() {
 
@@ -49,5 +52,11 @@ public class PagamentoAMQPConfiguration {
 
         return rabbitTemplate;
     }
+
+//    @Bean
+//    public FanoutExchange fanoutExchange() {
+//
+//        return new FanoutExchange("pagamentos.exchange");
+//    }
 
 }
