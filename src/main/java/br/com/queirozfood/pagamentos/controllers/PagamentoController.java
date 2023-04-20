@@ -47,7 +47,7 @@ public class PagamentoController {
         URI endereco = uriBuilder.path("/pagamentos/{id}").buildAndExpand(pagamentoDTO.getId()).toUri();
 
         Message message = new Message(("Criei um pagamento com o id " + pagamentoDTO.getId()).getBytes());
-        rabbitTemplate.send("pagamento.concluido", message);
+        rabbitTemplate.convertAndSend("pagamento.concluido", pagamentoDTO);
 
         return ResponseEntity.created(endereco).body(pagamentoDTO);
     }
